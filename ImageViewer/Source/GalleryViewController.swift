@@ -519,7 +519,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         /// gallery it is just a simple relayout. Allowing access to remaining code only makes sense if the app is
         /// portrait only but we still want to support rotation inside the gallery.
         guard UIApplication.isPortraitOnly else { return }
-        guard rotationMode == .applicationBased else { return }
+        guard rotationMode != .applicationBased else { return }
         guard UIDevice.current.orientation.isFlat == false &&
             isAnimating == false else { return }
 
