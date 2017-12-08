@@ -304,6 +304,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             })
     }
 
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
     open override func viewDidLoad() {
         super.viewDidLoad()
         rotateLayoutTransform()
@@ -311,18 +315,18 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     }
 
 
-//    open override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        if UIApplication.isPortraitOnly {
-//            switch rotationMode {
-//            case .always:
-//                rotateLayoutTransform()
-//            case .applicationBased:
-//                return
-//            }
-//        }
-//        configureLayout()
-//    }
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIApplication.isPortraitOnly {
+            switch rotationMode {
+            case .always:
+                rotateLayoutTransform()
+            case .applicationBased:
+                return
+            }
+        }
+        configureLayout()
+    }
 
     private func configureLayout() {
 
