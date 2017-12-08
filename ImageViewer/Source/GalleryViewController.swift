@@ -304,17 +304,28 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             })
     }
 
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        rotateLayoutTransform()
+        configureLayout()
+
+    }
+
+
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        if rotationMode == .always && UIApplication.isPortraitOnly {
-
-            let transform = windowRotationTransform()
-            let bounds = rotationAdjustedBounds()
-
-            self.view.transform = transform
-            self.view.bounds = bounds
+        if UIApplication.isPortraitOnly {
+            switch rotationMode {
+            case .always:
+                rotateLayoutTransform()
+            case .applicationBased:
+                return
+            }
         }
+        configureLayout()
+    }
+
+    private func configureLayout() {
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
 
@@ -324,6 +335,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
+    }
+
+    private func rotateLayoutTransform() {
+        let transform = windowRotationTransform()
+        let bounds = rotationAdjustedBounds()
+
+        self.view.transform = transform
+        self.view.bounds = bounds
     }
 
     private var defaultInsets: UIEdgeInsets {
