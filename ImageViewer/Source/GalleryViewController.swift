@@ -308,22 +308,21 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         super.viewDidLoad()
         rotateLayoutTransform()
         configureLayout()
-
     }
 
 
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if UIApplication.isPortraitOnly {
-            switch rotationMode {
-            case .always:
-                rotateLayoutTransform()
-            case .applicationBased:
-                return
-            }
-        }
-        configureLayout()
-    }
+//    open override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        if UIApplication.isPortraitOnly {
+//            switch rotationMode {
+//            case .always:
+//                rotateLayoutTransform()
+//            case .applicationBased:
+//                return
+//            }
+//        }
+//        configureLayout()
+//    }
 
     private func configureLayout() {
 
