@@ -281,6 +281,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         initialPresentationDone = true
     }
 
+    open override var shouldAutorotate: Bool {
+        return false
+    }
+
     fileprivate func presentInitially() {
 
         isAnimating = true
