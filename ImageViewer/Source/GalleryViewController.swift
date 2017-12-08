@@ -261,6 +261,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureThumbnailsButton()
         configureDeleteButton()
         configureScrubber()
+        rotateLayoutTransform()
+        configureLayout()
 
         self.view.clipsToBounds = false
     }
@@ -303,17 +305,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 }
             })
     }
-
-    override var shouldAutorotate: Bool {
-        return false
-    }
-
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        rotateLayoutTransform()
-        configureLayout()
-    }
-
 
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
