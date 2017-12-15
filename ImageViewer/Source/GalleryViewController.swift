@@ -144,7 +144,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
                 case .builtIn:              break
                 }
 
-                default: break
+            default: break
             }
         }
 
@@ -261,8 +261,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         configureThumbnailsButton()
         configureDeleteButton()
         configureScrubber()
-        rotateLayoutTransform()
-        configureLayout()
 
         self.view.clipsToBounds = false
     }
@@ -279,10 +277,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         presentInitially()
 
         initialPresentationDone = true
-    }
-
-    open override var shouldAutorotate: Bool {
-        return false
     }
 
     fileprivate func presentInitially() {
@@ -307,23 +301,20 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
                     strongSelf.launchedCompletion?()
                 }
-            })
+        })
     }
 
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if UIApplication.isPortraitOnly {
-            switch rotationMode {
-            case .always:
-                rotateLayoutTransform()
-            case .applicationBased:
-                return
-            }
-        }
-        configureLayout()
-    }
 
-    private func configureLayout() {
+        if rotationMode == .always && UIApplication.isPortraitOnly {
+
+            let transform = windowRotationTransform()
+            let bounds = rotationAdjustedBounds()
+
+            self.view.transform = transform
+            self.view.bounds = bounds
+        }
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
 
@@ -333,14 +324,6 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         layoutHeaderView()
         layoutFooterView()
         layoutScrubber()
-    }
-
-    private func rotateLayoutTransform() {
-        let transform = windowRotationTransform()
-        let bounds = rotationAdjustedBounds()
-
-        self.view.transform = transform
-        self.view.bounds = bounds
     }
 
     private var defaultInsets: UIEdgeInsets {
@@ -492,14 +475,14 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             setViewControllers([previousVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
-                    })
+                })
             })
         } else {
             let nextVC = self.pagingDataSource.createItemController(index + 1)
             setViewControllers([nextVC], direction: direction, animated: true, completion: { finished in
                 DispatchQueue.main.async(execute: { [weak self] in
                     self?.setViewControllers([imageViewController], direction: direction, animated: false, completion: nil)
-                    })
+                })
             })
         }
     }
@@ -596,13 +579,13 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
                         strongSelf.overlayView.dismiss()
 
-                        }, completion: { [weak self] in
+                    }, completion: { [weak self] in
 
-                            self?.isAnimating = true
-                            self?.closeGallery(false, completion: completion)
+                        self?.isAnimating = true
+                        self?.closeGallery(false, completion: completion)
                     })
                 }
-            })
+        })
     }
 
     func closeGallery(_ animated: Bool, completion: (() -> Void)?) {
@@ -731,3 +714,4 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.dismiss(animated: false, completion: nil)
     }
 }
+
